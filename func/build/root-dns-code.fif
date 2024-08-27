@@ -215,6 +215,7 @@ PROGRAM{
     DROP	//  _3 _5 _7
   }>
   dnsresolve PROC:<{
+    c2 SAVE
     SAMEALTSAVE	//  subdomain category
     DROP	//  subdomain
     DUP	//  subdomain subdomain
@@ -248,7 +249,7 @@ PROGRAM{
     0 PUSHINT	//  subdomain starts_with_zero_byte subdomain_len ton_address t_me_address ton_www_address _29=0
     DUP	//  subdomain starts_with_zero_byte subdomain_len ton_address t_me_address ton_www_address _29=0 _30=0
     NEWC	//  subdomain starts_with_zero_byte subdomain_len ton_address t_me_address ton_www_address _29=0 _30=0 _31
-    x{746f6e} PUSHSLICE	//  subdomain starts_with_zero_byte subdomain_len ton_address t_me_address ton_www_address _29=0 _30=0 _31 _32
+    x{696f6e} PUSHSLICE	//  subdomain starts_with_zero_byte subdomain_len ton_address t_me_address ton_www_address _29=0 _30=0 _31 _32
     STSLICER	//  subdomain starts_with_zero_byte subdomain_len ton_address t_me_address ton_www_address _29=0 _30=0 _33
     8 STU	//  subdomain starts_with_zero_byte subdomain_len ton_address t_me_address ton_www_address _29=0 _35
     x{777777} PUSHSLICE	//  subdomain starts_with_zero_byte subdomain_len ton_address t_me_address ton_www_address _29=0 _35 _36
@@ -288,7 +289,7 @@ PROGRAM{
     }>
     0 PUSHINT	//  subdomain starts_with_zero_byte subdomain_len ton_address t_me_address _66=0
     NEWC	//  subdomain starts_with_zero_byte subdomain_len ton_address t_me_address _66=0 _67
-    x{746f6e} PUSHSLICE	//  subdomain starts_with_zero_byte subdomain_len ton_address t_me_address _66=0 _67 _68
+    x{696f6e} PUSHSLICE	//  subdomain starts_with_zero_byte subdomain_len ton_address t_me_address _66=0 _67 _68
     STSLICER	//  subdomain starts_with_zero_byte subdomain_len ton_address t_me_address _66=0 _69
     8 STU	//  subdomain starts_with_zero_byte subdomain_len ton_address t_me_address _71
     ENDC	//  subdomain starts_with_zero_byte subdomain_len ton_address t_me_address _72
@@ -331,7 +332,7 @@ PROGRAM{
     x{6d65} PUSHSLICE	//  subdomain starts_with_zero_byte subdomain_len t_me_address _98=0 _99=0 _100 _101
     STSLICER	//  subdomain starts_with_zero_byte subdomain_len t_me_address _98=0 _99=0 _102
     8 STU	//  subdomain starts_with_zero_byte subdomain_len t_me_address _98=0 _104
-    x{74} PUSHSLICE	//  subdomain starts_with_zero_byte subdomain_len t_me_address _98=0 _104 _105
+    x{69} PUSHSLICE	//  subdomain starts_with_zero_byte subdomain_len t_me_address _98=0 _104 _105
     STSLICER	//  subdomain starts_with_zero_byte subdomain_len t_me_address _98=0 _106
     8 STU	//  subdomain starts_with_zero_byte subdomain_len t_me_address _108
     ENDC	//  subdomain starts_with_zero_byte subdomain_len t_me_address _109
