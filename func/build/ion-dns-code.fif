@@ -1,0 +1,251 @@
+"Asm.fif" include
+// automatically generated from `stdlib.fc` `dns-utils.fc` `ion-dns.fc` 
+PROGRAM{
+  DECLPROC zero_address
+  DECLPROC get_top_domain_bits
+  DECLPROC read_domain_from_comment
+  DECLPROC check_domain_string
+  DECLPROC get_min_price_config
+  DECLPROC get_min_price
+  DECLPROC load_data
+  123660 DECLMETHOD dnsresolve
+  DECLPROC recv_internal
+  zero_address PROC:<{
+    // 
+    0 PUSHINT	//  _0=0
+    NEWC	//  _0=0 _1
+    2 STU	//  _3
+    ENDC	//  _4
+    CTOS	//  _5
+  }>
+  get_top_domain_bits PROC:<{
+    //  domain
+    0 PUSHINT	//  domain i=0
+    UNTIL:<{
+      SWAP	//  i domain
+      8 LDU	//  i char domain
+      SWAP	//  i domain char
+      0 EQINT	//  i domain need_break
+      DUP	//  i domain need_break need_break
+      NOT	//  i domain need_break _11
+      IF:<{	//  i domain need_break
+        s0 s2 XCHG	//  need_break domain i
+        8 ADDCONST	//  need_break domain i
+        s0 s2 XCHG	//  i domain need_break
+      }>	//  i domain need_break
+      s1 s2 XCHG	//  domain i need_break
+    }>	//  domain i
+    NIP	//  i
+    DUP	//  i i
+    0 EQINT	//  i _16
+    201 THROWIF
+  }>
+  read_domain_from_comment PROC:<{
+    //  in_msg_body
+    NEWC	//  in_msg_body result
+    UNTIL:<{
+      OVER	//  in_msg_body result in_msg_body
+      SBITS	//  in_msg_body result _6
+      s1 s2 XCHG	//  result in_msg_body _6
+      LDSLICEX	//  result _5 in_msg_body
+      -ROT	//  in_msg_body result _5
+      STSLICER	//  in_msg_body result
+      OVER	//  in_msg_body result in_msg_body
+      SREFS	//  in_msg_body result refs_len
+      DUP	//  in_msg_body result refs_len refs_len
+      0 EQINT	//  in_msg_body result refs_len need_break
+      DUP	//  in_msg_body result refs_len need_break need_break
+      NOT	//  in_msg_body result refs_len need_break _13
+      IF:<{	//  in_msg_body result refs_len need_break
+        SWAP	//  in_msg_body result need_break refs_len
+        1 EQINT	//  in_msg_body result need_break _16
+        202 THROWIFNOT
+        s0 s2 XCHG	//  need_break result in_msg_body
+        LDREF	//  need_break result _26 _25
+        DROP	//  need_break result _18
+        CTOS	//  need_break result in_msg_body
+        s0 s2 XCHG	//  in_msg_body result need_break
+      }>ELSE<{
+        NIP	//  in_msg_body result need_break
+      }>
+    }>	//  in_msg_body result
+    NIP	//  result
+    ENDC	//  _21
+    CTOS	//  _22
+  }>
+  check_domain_string PROC:<{
+    //  domain
+    0 PUSHINT	//  domain i=0
+    OVER	//  domain i=0 domain
+    SBITS	//  domain i=0 len
+    UNTIL:<{
+      2DUP	//  domain i len i len
+      EQUAL	//  domain i len need_break
+      DUP	//  domain i len need_break need_break
+      NOT	//  domain i len need_break _8
+      IF:<{	//  domain i len need_break
+        DROP	//  domain i len
+        s0 s2 XCHG	//  len i domain
+        8 LDU	//  len i char domain
+        OVER	//  len i char domain char
+        45 EQINT	//  len i char domain is_hyphen
+        s3 PUSH	//  len i char domain is_hyphen i
+        0 GTINT	//  len i char domain is_hyphen _18
+        AND	//  len i char domain _19
+        s4 PUSH	//  len i char domain _19 len
+        -8 ADDCONST	//  len i char domain _19 _21
+        s4 s(-1) PUXC	//  len i char domain _19 i _21
+        LESS	//  len i char domain _19 _22
+        AND	//  len i char domain _23
+        s2 PUSH	//  len i char domain _23 char
+        47 GTINT	//  len i char domain _23 _25
+        s3 PUSH	//  len i char domain _23 _25 char
+        58 LESSINT	//  len i char domain _23 _25 _27
+        AND	//  len i char domain _23 _28
+        OR	//  len i char domain _29
+        s2 PUSH	//  len i char domain _29 char
+        96 GTINT	//  len i char domain _29 _31
+        s0 s3 XCHG	//  len i _31 domain _29 char
+        123 LESSINT	//  len i _31 domain _29 _33
+        s1 s3 XCHG	//  len i _29 domain _31 _33
+        AND	//  len i _29 domain _34
+        s1 s2 XCHG	//  len i domain _29 _34
+        OR	//  len i domain valid_char
+        NOT	//  len i domain need_break
+        DUP	//  len i domain need_break need_break
+        NOT	//  len i domain need_break _37
+        IF:<{	//  len i domain need_break
+          s0 s2 XCHG	//  len need_break domain i
+          8 ADDCONST	//  len need_break domain i
+          s0 s2 XCHG	//  len i domain need_break
+        }>	//  len i domain need_break
+        s1 s3 XCHG	//  domain i len need_break
+      }>	//  domain i len need_break
+    }>	//  domain i len
+    1 2 BLKDROP2	//  i len
+    EQUAL	//  _40
+  }>
+  get_min_price_config PROC:<{
+    //  domain_char_count
+    DUP	//  domain_char_count domain_char_count
+    4 EQINT	//  domain_char_count _2
+    IFJMP:<{	//  domain_char_count
+      DROP	// 
+      1000 PUSHINT	//  _3=1000
+      100 PUSHINT	//  _3=1000 _4=100
+    }>	//  domain_char_count
+    DUP	//  domain_char_count domain_char_count
+    5 EQINT	//  domain_char_count _6
+    IFJMP:<{	//  domain_char_count
+      DROP	// 
+      500 PUSHINT	//  _7=500
+      50 PUSHINT	//  _7=500 _8=50
+    }>	//  domain_char_count
+    DUP	//  domain_char_count domain_char_count
+    6 EQINT	//  domain_char_count _10
+    IFJMP:<{	//  domain_char_count
+      DROP	// 
+      400 PUSHINT	//  _11=400
+      40 PUSHINT	//  _11=400 _12=40
+    }>	//  domain_char_count
+    DUP	//  domain_char_count domain_char_count
+    7 EQINT	//  domain_char_count _14
+    IFJMP:<{	//  domain_char_count
+      DROP	// 
+      300 PUSHINT	//  _15=300
+      30 PUSHINT	//  _15=300 _16=30
+    }>	//  domain_char_count
+    DUP	//  domain_char_count domain_char_count
+    8 EQINT	//  domain_char_count _18
+    IFJMP:<{	//  domain_char_count
+      DROP	// 
+      200 PUSHINT	//  _19=200
+      20 PUSHINT	//  _19=200 _20=20
+    }>	//  domain_char_count
+    DUP	//  domain_char_count domain_char_count
+    9 EQINT	//  domain_char_count _22
+    IFJMP:<{	//  domain_char_count
+      DROP	// 
+      100 PUSHINT	//  _23=100
+      10 PUSHINT	//  _23=100 _24=10
+    }>	//  domain_char_count
+    10 EQINT	//  _26
+    IFJMP:<{	// 
+      50 PUSHINT	//  _27=50
+      5 PUSHINT	//  _27=50 _28=5
+    }>	// 
+    10 PUSHINT	//  _29=10
+    1 PUSHINT	//  _29=10 _30=1
+  }>
+  get_min_price PROC:<{
+    //  domain_bits_length now_time
+    SWAP	//  now_time domain_bits_length
+    3 RSHIFT#	//  now_time _5
+    get_min_price_config CALLDICT	//  now_time start_min_price end_min_price
+    SWAP
+    1000000000 PUSHINT	//  now_time end_min_price start_min_price _7=1000000000
+    MUL	//  now_time end_min_price start_min_price
+    SWAP
+    1000000000 PUSHINT	//  now_time start_min_price end_min_price _9=1000000000
+    MUL	//  now_time start_min_price end_min_price
+    s0 s2 XCHG
+    1659171600 PUSHINT	//  end_min_price start_min_price now_time _12=1659171600
+    SUB	//  end_min_price start_min_price seconds
+    2592000 PUSHINT	//  end_min_price start_min_price seconds _15=2592000
+    DIV	//  end_min_price start_min_price months
+    DUP	//  end_min_price start_min_price months months
+    21 GTINT	//  end_min_price start_min_price months _18
+    IFJMP:<{	//  end_min_price start_min_price months
+      2DROP	//  end_min_price
+    }>	//  end_min_price start_min_price months
+    1 2 BLKDROP2	//  start_min_price months
+    REPEAT:<{	//  start_min_price
+      90 MULCONST	//  _20
+      100 PUSHINT	//  _20 _21=100
+      DIV	//  start_min_price
+    }>
+  }>
+  load_data PROCINLINE:<{
+    // 
+    c4 PUSH	//  _1
+    CTOS	//  ds
+    256 LDU	//  _3 ds
+    8 LDU	//  _3 _12 _11
+    DROP	//  _3 _6
+  }>
+  dnsresolve PROC:<{
+    //  subdomain category
+    DROP	//  subdomain
+    DUP	//  subdomain subdomain
+    SBITS	//  subdomain _3
+    8 PUSHINT	//  subdomain _3 _4=8
+    MOD	//  subdomain _5
+    0 EQINT	//  subdomain _7
+    70 THROWIFNOT
+    DUP	//  subdomain subdomain
+    8 PLDI	//  subdomain _11
+    0 EQINT	//  subdomain starts_with_zero_byte
+    SWAP	//  starts_with_zero_byte subdomain
+    SBITS	//  starts_with_zero_byte subdomain_len
+    8 EQINT	//  starts_with_zero_byte _17
+    AND	//  _18
+    IFJMP:<{	// 
+      load_data INLINECALLDICT	//  adnl flags
+      44289 PUSHINT	//  adnl flags _23=44289
+      NEWC	//  adnl flags _23=44289 _24
+      16 STU	//  adnl flags _26
+      s1 s2 XCHG	//  flags adnl _26
+      256 STU	//  flags _28
+      8 STU	//  _30
+      ENDC	//  result
+      8 PUSHINT	//  result _32=8
+      SWAP	//  _32=8 result
+    }>	// 
+    0 PUSHINT	//  _33=0
+    PUSHNULL	//  _33=0 _34
+  }>
+  recv_internal PROC:<{
+    //  msg_value in_msg_full in_msg_body
+    3 BLKDROP	// 
+  }>
+}END>c
